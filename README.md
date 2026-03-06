@@ -1,4 +1,4 @@
-# GPT Team Platform
+# Depok City Drinking Water Information System
 
 A modular **Node.js + Express backend system** designed to manage **user authentication, forms, and submissions** with a structured MVC architecture and JWT-based access control.
 
