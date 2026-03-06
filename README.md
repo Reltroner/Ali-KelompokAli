@@ -1,16 +1,64 @@
-A simple **Node.js + Express web application** designed to manage users, forms, and submissions with authentication and dashboard interface.
+# GPT Team Platform
 
-This project demonstrates a typical **MVC-style backend structure** with routing, controllers, middleware, and database integration.
+A modular **Node.js + Express backend system** designed to manage **user authentication, forms, and submissions** with a structured MVC architecture and JWT-based access control.
+
+This project demonstrates practical backend engineering concepts including:
+
+* API routing
+* Authentication middleware
+* Modular controller architecture
+* Database modeling
+* File upload handling
+* Protected routes using JWT
+
+The system can serve as a **foundation for form management systems, LMS tools, or internal workflow platforms**.
 
 ---
 
-# 📦 Tech Stack
+# 🚀 System Overview
 
-* **Node.js**
-* **Express.js**
-* **MySQL**
-* **JWT Authentication**
-* **HTML / CSS (Static Views)**
+The application is structured as a lightweight backend service that exposes API endpoints and serves static views for interaction.
+
+Core capabilities include:
+
+* User authentication and token-based session management
+* Form creation and management
+* Submission storage
+* File uploads
+* Dashboard navigation
+* Modular routing system
+
+---
+
+# 🧠 Architecture
+
+The project follows a **layered MVC-inspired architecture**.
+
+```
+Client / Browser
+        │
+        ▼
+     Routes
+        │
+        ▼
+   Controllers
+        │
+        ▼
+     Models
+        │
+        ▼
+    Database
+```
+
+### Responsibilities
+
+| Layer       | Responsibility                |
+| ----------- | ----------------------------- |
+| Routes      | Define API endpoints          |
+| Controllers | Handle request logic          |
+| Models      | Interact with database        |
+| Middleware  | Security & request validation |
+| Views       | Static UI pages               |
 
 ---
 
@@ -21,30 +69,29 @@ This project demonstrates a typical **MVC-style backend structure** with routing
 ├── app.js
 ├── bin/
 │   └── www
+│
 ├── controllers/
 │   ├── authController.js
 │   ├── formsController.js
 │   ├── homeController.js
 │   ├── submissionController.js
 │   └── usersController.js
-├── database/
-│   └── gpt-team.sql
+│
 ├── middleware/
 │   └── verifyToken.js
+│
 ├── models/
 │   ├── forms.js
 │   ├── submissions.js
 │   └── users.js
+│
 ├── routes/
 │   ├── auth.js
 │   ├── forms.js
 │   ├── submission.js
 │   ├── users.js
 │   └── index.js
-├── public/
-│   ├── index.html
-│   └── stylesheets/
-│       └── style.css
+│
 ├── views/
 │   ├── Dashboard.html
 │   ├── Login.html
@@ -53,113 +100,249 @@ This project demonstrates a typical **MVC-style backend structure** with routing
 │   ├── Matkul.html
 │   ├── class.html
 │   └── class-details.html
+│
+├── public/
+│   ├── index.html
+│   └── stylesheets/
+│       └── style.css
+│
 ├── assets/
 │   ├── avatar/
 │   └── files_upload/
+│
+├── database/
+│   └── gpt-team.sql
+│
 ├── package.json
 └── README.md
 ```
 
 ---
 
-# ⚙️ Features
+# ⚙️ Core Features
 
-### 🔐 Authentication
+## Authentication System
 
-* User login system
-* JWT token verification
-* Protected routes using middleware
+* User login endpoint
+* JWT-based session token
+* Token verification middleware
+* Protected routes
 
-### 👤 User Management
+Security flow:
 
-* Create and manage user profiles
-* User-related endpoints
+```
+User Login
+   │
+   ▼
+JWT Token Issued
+   │
+   ▼
+Token Stored Client Side
+   │
+   ▼
+verifyToken Middleware
+   │
+   ▼
+Protected API Access
+```
 
-### 📄 Forms Management
+---
 
-* Create and manage forms
-* Store form submissions
+## Forms Management
 
-### 📥 Submission Handling
+Allows creation and management of form data.
 
-* Upload files
-* Store and process submission data
+Typical workflow:
 
-### 📊 Dashboard
+```
+Admin creates form
+      │
+      ▼
+Users submit responses
+      │
+      ▼
+Submissions stored in database
+```
 
-* Basic dashboard interface
-* Navigation across application modules
+Key components:
+
+* formsController
+* forms model
+* forms routes
+
+---
+
+## Submission Handling
+
+Handles user responses and uploaded files.
+
+Capabilities:
+
+* store submissions
+* attach uploaded files
+* map submission to forms
+
+Upload files stored in:
+
+```
+assets/files_upload/
+```
+
+---
+
+## User Management
+
+Provides endpoints for:
+
+* user creation
+* profile retrieval
+* account management
+
+Controllers involved:
+
+```
+usersController.js
+```
+
+Model:
+
+```
+models/users.js
+```
 
 ---
 
 # 🗄 Database
 
-Database schema is provided in:
+The system uses **MySQL**.
+
+Schema file provided in:
 
 ```
 database/gpt-team/gpt-team.sql
 ```
 
-To import the database:
+Basic data entities:
 
-```sql
-CREATE DATABASE gpt_team;
-USE gpt_team;
+| Table       | Purpose        |
+| ----------- | -------------- |
+| users       | account data   |
+| forms       | form metadata  |
+| submissions | form responses |
 
-SOURCE gpt-team.sql;
+---
+
+# 🔐 Security Layer
+
+Authentication uses **JWT (JSON Web Token)**.
+
+Middleware:
+
+```
+middleware/verifyToken.js
+```
+
+Responsibilities:
+
+* validate JWT
+* block unauthorized requests
+* protect sensitive endpoints
+
+---
+
+# 📡 API Design
+
+Example endpoint structure.
+
+### Authentication
+
+```
+POST /auth/login
+POST /auth/register
+```
+
+---
+
+### Users
+
+```
+GET /users
+GET /users/:id
+POST /users
+```
+
+---
+
+### Forms
+
+```
+GET /forms
+POST /forms
+GET /forms/:id
+```
+
+---
+
+### Submissions
+
+```
+POST /submission
+GET /submission/:id
 ```
 
 ---
 
 # 🚀 Installation
 
-Clone the repository:
+Clone repository
 
 ```bash
 git clone https://github.com/yourusername/gpt-team.git
 cd gpt-team
 ```
 
-Install dependencies:
+Install dependencies
 
 ```bash
 npm install
 ```
 
-Create environment configuration:
+Create environment file
 
 ```
 .env
 ```
 
-Example:
+Example configuration
 
 ```
 PORT=3000
+
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=
 DB_NAME=gpt_team
+
 JWT_SECRET=your_secret_key
-```
-
-Run the application:
-
-```bash
-npm start
-```
-
-Or using nodemon:
-
-```bash
-npm run dev
 ```
 
 ---
 
-# 🌐 Application Access
+# ▶ Running the Application
 
-After running the server:
+Start server
+
+```
+npm start
+```
+
+Development mode
+
+```
+npm run dev
+```
+
+Application will run at:
 
 ```
 http://localhost:3000
@@ -167,37 +350,42 @@ http://localhost:3000
 
 ---
 
-# 🧠 Architecture Overview
+# 🧪 Development Notes
 
-The application follows a simplified **MVC architecture**:
+This repository demonstrates several backend engineering practices:
 
-```
-Routes
-   ↓
-Controllers
-   ↓
-Models
-   ↓
-Database
-```
+* modular route design
+* controller separation
+* middleware-based security
+* MVC-style organization
+* file upload handling
+* relational data modeling
 
-Middleware is used for:
+The architecture is intentionally simple but extensible, allowing future expansion such as:
 
-* Authentication
-* Token verification
-* Request validation
+* role based access control
+* REST API documentation
+* validation layers
+* service layer abstraction
+* microservice separation
 
 ---
 
 # 👥 Contributors
 
-GitHub contributors based on repository history:
+Based on repository commit history:
 
 * **Raidan Sandra (Reltroner)**
 * **Ali161725**
 
 ---
 
+# 📌 Project Purpose
+
+This project is intended as a **backend architecture learning project** demonstrating how to structure a Node.js application with authentication, routing, and database interaction.
+
+---
+
 # 📜 License
 
-This project is provided for educational and development purposes.
+Open source project for educational and development purposes.
