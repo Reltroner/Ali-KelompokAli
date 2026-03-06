@@ -424,7 +424,7 @@ Potential architectural enhancements include:
 
 Based on repository history:
 
-* **Raidan Malik Sandra (Reltroner)**
+* **Raidan Sandra (Reltroner)**
 * **Ali161725**
 
 ---
