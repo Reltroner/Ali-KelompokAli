@@ -1,68 +1,147 @@
 # Depok City Drinking Water Information System
 
-A modular **Node.js + Express backend system** designed to manage **user authentication, forms, and submissions** with a structured MVC architecture and JWT-based access control.
+### Municipal Water Service Management Platform
 
-This project demonstrates practical backend engineering concepts including:
+A modular **Node.js + Express backend system** designed to manage **user authentication, service forms, and citizen submissions** for municipal drinking water services in Depok City.
 
-* API routing
-* Authentication middleware
-* Modular controller architecture
-* Database modeling
-* File upload handling
-* Protected routes using JWT
+The system demonstrates practical backend engineering concepts including:
 
-The system can serve as a **foundation for form management systems, LMS tools, or internal workflow platforms**.
+* REST-style API routing
+* JWT-based authentication
+* modular MVC architecture
+* relational database modeling
+* file upload handling
+* middleware-based security
 
----
-
-# 🚀 System Overview
-
-The application is structured as a lightweight backend service that exposes API endpoints and serves static views for interaction.
-
-Core capabilities include:
-
-* User authentication and token-based session management
-* Form creation and management
-* Submission storage
-* File uploads
-* Dashboard navigation
-* Modular routing system
+This platform can serve as a **foundation for municipal service portals, citizen reporting systems, or internal government workflow tools**.
 
 ---
 
-# 🧠 Architecture
+# System Context
 
-The project follows a **layered MVC-inspired architecture**.
+Municipal water service departments typically receive reports and service requests from citizens regarding:
+
+* water supply issues
+* service complaints
+* infrastructure reports
+* service requests
+
+This system digitizes the process by providing a centralized backend service that enables:
+
+* citizen authentication
+* digital form submissions
+* service request tracking
+* administrative dashboards
+* document/file uploads
+
+---
+
+# Key Features
+
+### Authentication System
+
+Secure user authentication using **JWT-based session management**.
+
+Capabilities:
+
+* user registration
+* login authentication
+* token validation
+* protected API routes
+
+---
+
+### Citizen Form Submission
+
+Users can submit service requests through structured forms.
+
+Example use cases:
+
+* water supply complaints
+* infrastructure damage reports
+* service requests
+
+Each submission is stored and tracked in the database.
+
+---
+
+### File Upload Support
+
+Users can upload supporting files such as:
+
+* photos
+* documents
+* evidence of service issues
+
+Uploaded files are stored in:
+
+```
+assets/files_upload/
+```
+
+---
+
+### User Management
+
+Administrative capabilities include:
+
+* managing user accounts
+* retrieving user profiles
+* managing citizen submissions
+
+---
+
+# System Architecture
+
+The application follows a **layered MVC-inspired architecture**.
 
 ```
 Client / Browser
         │
         ▼
-     Routes
+     Express Router
         │
         ▼
-   Controllers
+   Controller Layer
         │
         ▼
-     Models
+     Model Layer
         │
         ▼
-    Database
+   MySQL Database
 ```
 
-### Responsibilities
+### Architectural Principles
 
-| Layer       | Responsibility                |
-| ----------- | ----------------------------- |
-| Routes      | Define API endpoints          |
-| Controllers | Handle request logic          |
-| Models      | Interact with database        |
-| Middleware  | Security & request validation |
-| Views       | Static UI pages               |
+The system is designed with the following principles:
+
+**Separation of concerns**
+
+Each layer is responsible for a specific concern:
+
+| Layer       | Responsibility           |
+| ----------- | ------------------------ |
+| Routes      | API endpoint definitions |
+| Controllers | business logic           |
+| Models      | database interaction     |
+| Middleware  | security & validation    |
+| Views       | static UI templates      |
+
+**Modularity**
+
+Controllers and routes are separated to ensure maintainability.
+
+**Extensibility**
+
+The architecture supports future additions such as:
+
+* service approval workflows
+* notification systems
+* analytics dashboards
 
 ---
 
-# 📂 Project Structure
+# Project Structure
 
 ```
 .
@@ -119,140 +198,104 @@ Client / Browser
 
 ---
 
-# ⚙️ Core Features
+# Data Flow
 
-## Authentication System
-
-* User login endpoint
-* JWT-based session token
-* Token verification middleware
-* Protected routes
-
-Security flow:
+Typical request lifecycle.
 
 ```
-User Login
-   │
-   ▼
-JWT Token Issued
-   │
-   ▼
-Token Stored Client Side
-   │
-   ▼
-verifyToken Middleware
-   │
-   ▼
-Protected API Access
-```
-
----
-
-## Forms Management
-
-Allows creation and management of form data.
-
-Typical workflow:
-
-```
-Admin creates form
+User Request
       │
       ▼
-Users submit responses
+Express Route
       │
       ▼
-Submissions stored in database
-```
-
-Key components:
-
-* formsController
-* forms model
-* forms routes
-
----
-
-## Submission Handling
-
-Handles user responses and uploaded files.
-
-Capabilities:
-
-* store submissions
-* attach uploaded files
-* map submission to forms
-
-Upload files stored in:
-
-```
-assets/files_upload/
+Controller Logic
+      │
+      ▼
+Model Query
+      │
+      ▼
+Database Response
+      │
+      ▼
+JSON Response to Client
 ```
 
 ---
 
-## User Management
+# Database
 
-Provides endpoints for:
+The system uses **MySQL** as the primary datastore.
 
-* user creation
-* profile retrieval
-* account management
-
-Controllers involved:
-
-```
-usersController.js
-```
-
-Model:
-
-```
-models/users.js
-```
-
----
-
-# 🗄 Database
-
-The system uses **MySQL**.
-
-Schema file provided in:
+Schema file:
 
 ```
 database/gpt-team/gpt-team.sql
 ```
 
-Basic data entities:
+Core entities:
 
-| Table       | Purpose        |
-| ----------- | -------------- |
-| users       | account data   |
-| forms       | form metadata  |
-| submissions | form responses |
+| Table       | Description              |
+| ----------- | ------------------------ |
+| users       | system users             |
+| forms       | form definitions         |
+| submissions | citizen form submissions |
+
+Example relationship:
+
+```
+User
+  │
+  ▼
+Form Submission
+  │
+  ▼
+Uploaded Files
+```
 
 ---
 
-# 🔐 Security Layer
+# Security Model
 
-Authentication uses **JWT (JSON Web Token)**.
+Security is implemented using **JWT authentication**.
 
-Middleware:
+Middleware responsible:
 
 ```
 middleware/verifyToken.js
 ```
 
-Responsibilities:
+Security responsibilities:
 
-* validate JWT
+* validate JWT tokens
 * block unauthorized requests
 * protect sensitive endpoints
+* enforce session integrity
+
+Authentication flow:
+
+```
+User Login
+   │
+   ▼
+JWT Token Generated
+   │
+   ▼
+Client Stores Token
+   │
+   ▼
+Token Sent in Request Header
+   │
+   ▼
+verifyToken Middleware
+   │
+   ▼
+Authorized API Access
+```
 
 ---
 
-# 📡 API Design
-
-Example endpoint structure.
+# API Overview
 
 ### Authentication
 
@@ -292,28 +335,28 @@ GET /submission/:id
 
 ---
 
-# 🚀 Installation
+# Installation
 
-Clone repository
+Clone repository:
 
 ```bash
 git clone https://github.com/yourusername/gpt-team.git
 cd gpt-team
 ```
 
-Install dependencies
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-Create environment file
+Create environment configuration:
 
 ```
 .env
 ```
 
-Example configuration
+Example configuration:
 
 ```
 PORT=3000
@@ -328,21 +371,21 @@ JWT_SECRET=your_secret_key
 
 ---
 
-# ▶ Running the Application
+# Running the Application
 
-Start server
+Start the server:
 
 ```
 npm start
 ```
 
-Development mode
+Development mode:
 
 ```
 npm run dev
 ```
 
-Application will run at:
+Application available at:
 
 ```
 http://localhost:3000
@@ -350,42 +393,50 @@ http://localhost:3000
 
 ---
 
-# 🧪 Development Notes
+# Engineering Concepts Demonstrated
 
 This repository demonstrates several backend engineering practices:
 
 * modular route design
 * controller separation
+* JWT-based authentication
 * middleware-based security
-* MVC-style organization
+* relational database modeling
 * file upload handling
-* relational data modeling
-
-The architecture is intentionally simple but extensible, allowing future expansion such as:
-
-* role based access control
-* REST API documentation
-* validation layers
-* service layer abstraction
-* microservice separation
+* REST-style API architecture
 
 ---
 
-# 👥 Contributors
+# Future Improvements
 
-Based on repository commit history:
+Potential architectural enhancements include:
 
-* **Raidan Sandra (Reltroner)**
+* Role-Based Access Control (RBAC)
+* OpenAPI API documentation
+* request validation layer
+* service layer abstraction
+* notification system
+* microservice architecture
+
+---
+
+# Contributors
+
+Based on repository history:
+
+* **Raidan Malik Sandra (Reltroner)**
 * **Ali161725**
 
 ---
 
-# 📌 Project Purpose
+# Project Purpose
 
-This project is intended as a **backend architecture learning project** demonstrating how to structure a Node.js application with authentication, routing, and database interaction.
+This project demonstrates how to design a **structured backend service using Node.js and Express** with authentication, routing, and relational database integration.
+
+It serves as a **learning platform for backend system architecture and API design**.
 
 ---
 
-# 📜 License
+# License
 
 Open source project for educational and development purposes.
